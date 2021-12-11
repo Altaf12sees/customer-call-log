@@ -1,0 +1,156 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+<html>
+    <head>
+        <title>Admin</title>
+        <style>
+            .clr_ac{
+                color:red;
+            }
+        </style>
+        <script>
+            function edit_product(s,n,t,c,a,m,r){
+                document.getElementById("serial_no").value = s;
+                document.getElementById('name').value = n;
+                document.getElementById("type").value = t;
+                document.getElementById('customer').value = c;
+                document.getElementById("address").value = a;
+                document.getElementById('mobile').value = m;
+                document.getElementById("region").value = r;
+            }
+        </script>
+    </head>
+
+<body>
+    <h4>Admin</h4>
+    <hr>
+        <div class="row container">
+            <div class="col-3">
+                <h5>Create New Product</h5>
+                <form action="{% url 'create_product' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label>Name</label>
+                      <input type="text" class="form-control" name="product_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" class="form-control" name="product_type" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer</label>
+                        <input type="text" name="customer_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile</label>
+                        <input type="text" name="mobile_no" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Region</label>
+                        <input type="text" name="region" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+            </div>
+            <div class="col-9">
+                <h5>Product lists</h5>
+                <table class="table able-responsive " style="font-size: small;">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Customer Name</th>
+                            <th>Address</th>
+                            <th>Mobile</th>
+                            <th>Region</th>
+                            <th>Serial Number</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        <tbody>
+                            {% for i in products_list %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.product_name}}</td>
+                                <td>{{i.product_type}}</td>
+                                <td>{{i.customer_name}}</td>
+                                <td>{{i.address}}</td>
+                                <td>{{i.mobile_no}}</td>
+                                <td>{{i.region}}</td>
+                                <td>{{i.serial_no}}</td>
+                                <td><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="edit_product('{{i.serial_no}}','{{i.product_name}}','{{i.product_type}}','{{i.customer_name}}','{{i.address}}','{{i.mobile_no}}','{{i.region}}');">Edit</a></td>
+                                <td><a href="/delete_product/{{i.id}}" class="clr_ac">Delete</a></td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <center>
+            <div class="container row">
+                <div class="col-6">
+                   <a href="/call_logs/"><button class="btn btn-primary">Call Logs</button></a> 
+                </div>
+                <div class="col-6">
+                    <a href="/call_reports/"><button class="btn btn-primary">Reports</button></a> 
+                </div>
+            </div>
+        </center>
+
+  
+  <!-- Modal for edit product -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{% url 'update_product' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <!-- <label>Serial Number</label> -->
+                  <input id="serial_no" type="text" class="form-control" name="serial_no" hidden >
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input id="name" type="text" class="form-control" name="product_name" required>
+                  </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input id="type" type="text" class="form-control" name="product_type" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer</label>
+                    <input id="customer" type="text" name="customer_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input id="address" type="text" name="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input id="mobile" type="text" name="mobile_no" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <input id="region" type="text" name="region" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,364 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}  
+<html>
+    <head>
+        <title>Update Call</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+         $(".chosen-select").chosen({
+            no_results_text: "Oops, nothing found!"
+            })
+        </script>
+        <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/> 
+        <style>
+            .fnt{
+                font-size: small;
+                color: blue;
+            }
+
+            .selectBox {
+            position: relative;
+            }
+
+            .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            }
+
+            #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            }
+
+            #checkboxes label {
+            display: block;
+            }
+
+            #checkboxes label:hover {
+            background-color: #1e90ff;
+            }
+        </style>
+        <script>
+            function search_item(){
+                var r = document.getElementById('search_items').value;
+                "{% for i in get_all_products %}"
+                    
+                if(r == "{{i.serial_no}}" || r == "{{i.mobile_no}}"){
+                    document.getElementById('product_name').value = "{{i.product_name}}"
+                    document.getElementById('product_type').value = "{{i.product_type}}"
+                    document.getElementById('customer_name').value = "{{i.customer_name}}"
+                }
+                    "{% for j in get_all_call_logs %}"
+                    if(r == "{{j.serial_no}}" || r == "{{j.mobile_no}}"){
+                        document.getElementById("agent_idno").value = "{{j.agent_idno}}"
+                        document.getElementById("serial_no").value = "{{j.serial_no}}"
+                        document.getElementById("mobile_no").value = "{{j.mobile_no}}"
+                        document.getElementById('call_date').value = "{{j.call_date}}"
+                        document.getElementById('items').value = "{{j.items}}"
+                        document.getElementById('call_reason').value = "{{j.call_reason}}"
+                        document.getElementById('action_taken').value = "{{j.call_action}}"
+                        document.getElementById('approval').value = "{{j.approval}}"
+
+                    }
+                    "{%endfor%}"
+                 "{%endfor%}"
+                
+                var ars = ar.split(" ")
+                alert(ars)
+                // for(var j=0; j<ars.length; j++){
+                //     alert(ar[j])
+                //     if(ar[j] == r){
+                //         document.getElementById('type').value = ar[j]
+                //     }
+                // }
+            
+                   
+                
+                
+            }
+            var expanded = false;
+
+            function showCheckboxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+            }
+
+            var expanded1 = false;
+            function showCheckboxesAction() {
+            var checkboxes = document.getElementById("checkboxesaction");
+            if (!expanded1) {
+                checkboxes.style.display = "block";
+                expanded1 = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded1 = false;
+            }
+            }
+
+            var expanded2 = false;
+            function showCheckboxesApprovals() {
+            var checkboxes = document.getElementById("checkboxesapproval");
+            if (!expanded2) {
+                checkboxes.style.display = "block";
+                expanded2 = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded2 = false;
+            }
+            }
+
+            var checkedList=[]
+            var checkedListCallAction=[]
+            var checkedListApproval=[]
+            function selectItems(val){
+            //    document.getElementById('mycheck').value;
+               checkedList.push(val)
+               document.getElementById('selected_items').value = checkedList;
+            }
+            function selectCallActions(val){
+            checkedListCallAction.push(val)
+               document.getElementById('selected_action').value = checkedListCallAction;
+            }
+            function selectCallApproval(val){
+                checkedListApproval.push(val)
+               document.getElementById('selected_approval').value = checkedListApproval;
+            }
+            function clearAll(){
+                document.getElementById("agent_idno").value = "";
+                document.getElementById("serial_no").value = "";
+                document.getElementById("mobile_no").value = "";
+                document.getElementById('search_items').value = "";
+                document.getElementById('product_name').value = "";
+                document.getElementById('product_type').value = "";
+                document.getElementById('customer_name').value = "";
+                document.getElementById('selected_items').value = "";
+                document.getElementById('selected_action').value = "";
+                document.getElementById('selected_approval').value = "";
+                document.getElementById('remark').value = "";
+            }
+            var agent_idno=""
+            var serial_no=""
+            var mobile_no=""
+            var search_items=""
+            var product_name=""
+            var product_type=""
+            var customer_name=""
+            var selected_items=""
+            var selected_action=""
+            var selected_approval=""
+            var remark=""
+
+            function saveFormData() {
+                var aid = document.getElementById('agent_idno').value;
+                agent_idno = aid;
+                var sno = document.getElementById('serial_no').value;
+                serial_no = sno;
+                var mn = document.getElementById('mobile_no').value;
+                mobile_no = mn;
+                var s = document.getElementById('search_items').value; 
+                search_items=s;
+                var p = document.getElementById('product_name').value;
+                product_name=p;
+                var pt = document.getElementById('product_type').value;
+                product_type=pt;
+                var cn = document.getElementById('customer_name').value;
+                customer_name=cn;
+                var mc = document.getElementById('selected_items').value;
+                selected_items=mc;
+                var sa = document.getElementById('selected_action').value;
+                selected_action=sa;
+                var sqp = document.getElementById('selected_approval').value;
+                selected_approval=sqp;
+                var r = document.getElementById('remark').value;
+                remark=r;
+                alert("Data Saved!")
+            }
+        function ShowSavedData(){
+            if(search_items){
+                document.getElementById('pop_win').style.display = "block";
+                document.getElementById('show_error').style.display = "none"
+                document.getElementById('agent_idno_1').value = agent_idno;
+                document.getElementById('serial_no_1').value = serial_no;
+                document.getElementById('mobile_no_1').value = mobile_no;
+                document.getElementById('search_items_1').value = search_items;
+                document.getElementById('product_name_1').value = product_name;
+                document.getElementById('product_type_1').value = product_type;
+                document.getElementById('customer_name_1').value = customer_name;
+                document.getElementById('selected_items_1').value = selected_items;
+                document.getElementById('selected_action_1').value = selected_action;
+                document.getElementById('selected_approval_1').value = selected_approval;
+                document.getElementById('remark_1').value = remark;
+            }else{
+                document.getElementById('pop_win').style.display = "none";
+                document.getElementById('show_error').style.display = "block"
+            }
+            
+
+        }
+        </script>
+    </head>
+<body>
+    <h4>Agent >> <span class="fnt">Call Logs</span></h4>
+    <hr><br>
+        <center><h3>Update New Call</h3>
+        <div class="container ">
+            <form action="{% url 'add_new_call_log' %}" method="POST">
+                {% csrf_token %}
+                <div class="col-6">
+                <div class="form-group">
+                  <label>Search by serial number/mobile number</label>
+                  <input id="search_items" type="text" class="form-control" name="product_name" placeholder="Enter serial no/phone..." onkeyup="search_item();">
+                </div>
+                <input type="text" id="agent_idno" name="agent_idno" hidden>
+                <input type="text" id="serial_no" name="serial_no" hidden>
+                <input type="text" id="mobile_no" name="mobile_no" hidden>
+                
+                
+                <hr><b>Product Details</b><hr>
+                <div class="form-group">
+                    <label>Product</label>
+                    <input type="text" id="product_name" class="form-control" name="product_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Product Type</label>
+                    <input type="text" id="product_type" class="form-control" name="product_type" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer</label>
+                    <input type="text" id="customer_name" class="form-control" name="customer_name" required>
+                </div>
+                <hr>
+                <div class="form-group col-9">
+                    <label>Choose <b>Call Nature</b> from below list</label>
+                    <div class="multiselect">
+                        <div>
+                            {% for i in get_call_reason %}
+                            <input type="checkbox" id="mycheck" onclick="selectItems('{{i}}');" />{{i}}</label><br>
+                            {%endfor%}
+                            <input type="text" id="selected_items" name="selected_items" class="col-9">
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="form-group col-9">
+                    <label>Choose <b>Call Action</b> from below list</label>
+                    <div class="multiselect">
+                        <div>
+                            {% for i in list_call_actions %}
+                            <input type="checkbox" id="mycheck" onclick="selectCallActions('{{i}}');" />{{i}}</label><br>
+                            {%endfor%}
+                            <input type="text" id="selected_action" name="selected_action" class="col-9"></div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                
+
+                <div class="form-group col-9">
+                    <label>Choose <b>Call Approvals</b> from below list</label>
+                    <div class="multiselect">
+                        <div>
+                            {% for i in list_approvals %}
+                            <input type="checkbox" id="mycheck" onclick="selectCallApproval('{{i}}');" />{{i}}</label><br>
+                            {%endfor%}
+                            <input type="text" id="selected_approval" name="selected_approval" class="col-5"></div>
+                        </div>
+                    </div>
+                </div>
+        
+                <br>
+                <div class="form-group col-9">
+                    <label><b>Remarks</b></label><br>
+                    <input type="text" id="remark" name="remark" class="col-5">   
+                </div>
+                <br>
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+              &nbsp;&nbsp;&nbsp;<button type="save" class="btn btn-info" onclick="saveFormData();">Save</button>
+              &nbsp;&nbsp;&nbsp;<button type="cancel" class="btn btn-danger" onclick="clearAll();">Cancel</button>
+            </div>
+        </div>
+    </center>
+    <div class="container">
+    <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn btn-primary" onclick="ShowSavedData();">Call</button>
+    </div><br>
+
+    
+  <!-- Modal for edit product -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Log Details</h5>
+          <p id="show_error" style="color: red; display: none;"><b>Data not saved!</b></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="pop_win">
+            <form method="POST" action="{% url 'add_new_call_log' %}">
+                {% csrf_token %}
+                <div class="form-group" >
+                  <label>Searched Item</label>
+                  <input id="search_items_1" type="text" class="form-control" name="search_items" >
+                </div>
+                <div class="form-group">
+                    <label>Product</label>
+                    <input id="product_name_1" type="text" class="form-control" name="product_name" required>
+                  </div>
+                <div class="form-group">
+                    <label>Product Type</label>
+                    <input id="product_type_1" type="text" class="form-control" name="product_type" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer name</label>
+                    <input id="customer_name_1" type="text" name="customer_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Call Reasons</label>
+                    <input id="selected_items_1" type="text" name="selected_items" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Call Actions</label>
+                    <input id="selected_action_1" type="text" name="selected_action" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Call Approvals</label>
+                    <input id="selected_approval_1" type="text" name="selected_approval" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <input id="remark_1" type="text" name="remark" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>AgentId</label>
+                    <input id="agent_idno_1" type="text" name="agent_idno" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Serial No</label>
+                    <input id="serial_no_1" type="text" name="serial_no" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input id="mobile_no_1" type="text" name="mobile_no" class="form-control" required>
+                </div><br>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

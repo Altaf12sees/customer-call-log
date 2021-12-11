@@ -1,0 +1,167 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+<html>
+    <head>
+        <title>Call Logs</title>
+        <style>
+            .fnt{
+                font-size: small;
+                color: blue;
+            }
+            * {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+        </style>
+        <script>
+            function myFunction() {
+              var input, filter, table, tr, td, i, j, txtValue;
+              input = document.getElementById("myInput");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("myTable");
+              tr = table.getElementsByTagName("tr");
+              th = table.getElementsByTagName("th");
+              for (i = 1; i < tr.length; i++) {
+                  for(j=0; j < th.length; j++){
+                td = tr[i].getElementsByTagName("td")[j];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break;
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }       
+              }
+              }
+            }
+            </script>
+    </head>
+
+<body>
+    
+    <h4>Admin >> <span class="fnt">Call Logs</span></h4>
+    <hr>
+    <center>
+        <div class="row container">
+            <div class="col">
+                <h5>Call Logs</h5>
+                <span class="fnt">Call logs for last two days</span>
+                <!-- search bar  -->
+                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for call logs.." title="Type in a name">
+                <table id="myTable" class="table table-responsive " style="font-size: small;">
+                    <thead>
+                        <tr class="header">
+                            <th>Sr.No</th>
+                            <th>Agent ID</th>
+                            <th>Serial Number</th>
+                            <th>Mobile</th>
+                            <th>Items</th>
+                            <th>Call Reason</th>
+                            <th>Action Taken</th>
+                            <th>Approval</th>
+                            <th>Call Date</th>
+                            <th>Remarks</th>
+                        </tr>
+                        <tbody>
+                            {% for i in call_logs %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.agent_idno}}</td>
+                                <td>{{i.serial_no}}</td>
+                                <td>{{i.mobile_no}}</td>
+                                <td>{{i.items}}</td>
+                                <td>{{i.call_reason}}</td>
+                                <td>{{i.call_action}}</td>
+                                <td>{{i.approval}}</td>
+                                <td>{{i.call_date}}</td>
+                                <td>{{i.remark}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+  
+  <!-- Modal for edit product -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{% url 'update_product' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <!-- <label>Serial Number</label> -->
+                  <input id="serial_no" type="text" class="form-control" name="serial_no" hidden >
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input id="name" type="text" class="form-control" name="product_name" required>
+                  </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input id="type" type="text" class="form-control" name="product_type" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer</label>
+                    <input id="customer" type="text" name="customer_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input id="address" type="text" name="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input id="mobile" type="text" name="mobile_no" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <input id="region" type="text" name="region" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</center>
+</body>
+</html>

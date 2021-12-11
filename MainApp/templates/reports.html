@@ -1,0 +1,138 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+<html>
+    <head>
+        <title>Reports</title>
+        <style>
+            .fnt{
+                font-size: small;
+                color: blue;
+            }
+            .s_bc_clr{
+                background-color: rgb(231, 227, 222);
+            }
+            </style>
+    </head>
+
+<body>
+    
+    <h4>Admin >> <span class="fnt">Call Reports</span></h4>
+    <hr>
+    <center><h5>Call Reports</h5><br></center>
+        <div class="row container">
+            <div class="col-4">
+                <table id="myTable" class="table able-responsive " style="font-size: small;">
+                   <span class="s_bc_clr">Calls Per Day</span>
+                    <thead>
+                        <tr class="header">
+                            <th>Sr.No</th>
+                            <th>Call Date</th>
+                            <th>NO of Calls</th>
+                        </tr>
+                        <tbody>
+                            {% for i in cbd %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.call_date}}</td>
+                                <td>{{i.total}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-4">
+            <table id="myTable" class="table able-responsive " style="font-size: small;">
+                <span class="s_bc_clr">Calls Per Product</span>
+                <thead>
+                    <tr class="header">
+                        <th>Sr.No</th>
+                        <th>Products</th>
+                        <th>NO of Calls</th>
+                    </tr>
+                    <tbody>
+                        {% for i in cbi %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.items}}</td>
+                            <td>{{i.total}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </thead>
+            </table>
+            </div>
+            <div class="col-4">
+                <table id="myTable" class="table able-responsive " style="font-size: small;">
+                    <span class="s_bc_clr">Calls Per Reason</span>
+                    <thead>
+                        <tr class="header">
+                            <th>Sr.No</th>
+                            <th>Reason</th>
+                            <th>NO of Calls</th>
+                        </tr>
+                        <tbody>
+                            {% for i in cbr %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.call_reason}}</td>
+                                <td>{{i.total}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </thead>
+                </table>
+                </div>
+        </div>
+
+  
+  <!-- Modal for edit product -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{% url 'update_product' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <!-- <label>Serial Number</label> -->
+                  <input id="serial_no" type="text" class="form-control" name="serial_no" hidden >
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input id="name" type="text" class="form-control" name="product_name" required>
+                  </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input id="type" type="text" class="form-control" name="product_type" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer</label>
+                    <input id="customer" type="text" name="customer_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input id="address" type="text" name="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input id="mobile" type="text" name="mobile_no" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <input id="region" type="text" name="region" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</center>
+</body>
+</html>
